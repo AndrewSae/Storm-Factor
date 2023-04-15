@@ -1,9 +1,7 @@
-import {StyleSheet, Text, View} from 'react-native';
-import {colors} from '../helpers/colors'
+import { StyleSheet, Text, View } from 'react-native';
+import { colors } from '../helpers/colors'
 
 const OtherDataCard = (Props) => {
-
-
   return (
     <View style={styles.container}>
       <Text>{Props.icon}</Text>
@@ -18,17 +16,12 @@ const styles = StyleSheet.create({
     width: 175,
     height: 175,
     backgroundColor: colors.cardColor,
-
     borderRadius: 20,
-
     display: 'flex',
     flexDirection: "column",
     justifyContent: 'center',
     alignItems: 'center',
-
     margin: 10,
-
-
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -37,17 +30,15 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
 
-elevation: 5,
+    elevation: 5,
   },
   dataDec: {
-    color:  colors.textColor,
+    color: colors.textColor,
     fontSize: 16
   },
   data: {
-    color:  colors.textColor,
+    color: colors.textColor,
   },
-  
 });
-
 
 export default OtherDataCard

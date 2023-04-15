@@ -1,17 +1,14 @@
-import { Image, StyleSheet, Text, View} from 'react-native';
-import {icons} from '../helpers/icons'
-import {colors} from '../helpers/colors'
-
+import { Image, StyleSheet, Text, View } from 'react-native';
+import { icons } from '../helpers/icons'
+import { colors } from '../helpers/colors'
 
 const HourForecast = (Props) => {
-
-
   return (
     <View style={styles.container}>
-        <Text style={styles.temp}>{Props.temp}°</Text>
-        <Image style={styles.icon} source={icons[Props.icon]}/>
-        <Text style={styles.time}>{Props.time}</Text>
-        <Text style={styles.date}>{Props.date}</Text>
+      <Text style={styles.temp}>{Props.temp}°</Text>
+      <Image style={styles.icon} source={icons[Props.icon]} />
+      <Text style={styles.time}>{Props.time}</Text>
+      <Text style={styles.date}>{Props.date}</Text>
     </View>
   )
 }
@@ -26,10 +23,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: 'space-evenly',
     alignItems: 'center',
-
     margin: 10,
-
-
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -52,8 +46,7 @@ const styles = StyleSheet.create({
   date: {
     color: colors.textColor
   },
-  
-});
 
+});
 
 export default HourForecast
