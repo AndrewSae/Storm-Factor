@@ -1,30 +1,38 @@
 {
   "expo": {
-    "name": "storm_factor",
-    "slug": "storm_factor",
-    "version": "1.0.0",
+    "name": "Storm Factor",
+    "slug": "storm-factor",
+    "description": "A weather app",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#0E67B4"
     },
     "assetBundlePatterns": [
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.andrewsae.stormfactor"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      }
+        "backgroundColor": "#0E67B4"
+      },
+      "package": "com.andrewsae.stormfactor"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "2c9d9eb2-cbd9-4834-9b22-feb83ee0a556"
+      }
     }
   }
 }
