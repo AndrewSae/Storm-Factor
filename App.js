@@ -17,12 +17,10 @@ import { colors } from './helpers/colors'
 export default function App() {
 
 	// Set up state variables
-
 	const [city, setCity] = useState('');
 
 	// states for error msg
 	const [inputErr, setInputErr] = useState("");
-	const [errorStatus, setErrorStatus] = useState(false);
 
 	// state for loading data 
 	const [loading, setLoading] = useState(false)
@@ -33,12 +31,13 @@ export default function App() {
 	const [location, setLocation] = useState(null);
 	const [locationName, setLocationName] = useState(null)
 
+
 	// get the weather data and update all nessacary useState's
 	const getData = async (lat, lon) => {
 		const data = await getWeather(lat, lon)
-		await setWeather(data);
-		await sethourly(await data["hourly"]);
-		await setDaily(await data["daily"]);
+		setWeather(data);
+		sethourly(data["hourly"]);
+		setDaily(data["daily"]);
 		return;
 	}
 
@@ -46,41 +45,35 @@ export default function App() {
 	const onSubmit = async () => {
 		setLoading(true)
 		Keyboard.dismiss();
-		setErrorStatus(false);
 		setInputErr("");
 		if (city === "") {
 			setInputErr("You must enter a location first");
-			setErrorStatus(true);
 		} else {
 			setInputErr("");
-			setErrorStatus(false);
 			try {
 				const data = await getCords(city);
 				setLocationName(data[2])
 				await getData(data[0], data[1])
 			} catch (error) {
 				setInputErr("An error occurred. Please try again.");
-				setErrorStatus(true);
 			}
 		}
 		setLoading(false);
 	}
-
-
 
 	useEffect(() => {
 		(async () => {
 			setLoading(true)
 			let { status } = await Location.requestForegroundPermissionsAsync();
 			if (status !== 'granted') {
-				await setLocationName("Orlando, Florida, United States")
+				setLocationName("Orlando, FL, United States")
 				await getData(28, 81)
 			} else {
 				const isAndroid = Platform.OS == 'android';
 				let location = await Location.getCurrentPositionAsync({ accuracy: isAndroid ? Location.Accuracy.Low : Location.Accuracy.Lowest, });
 				const cords = [location.coords.latitude, location.coords.longitude]
 				const x = await cordsToCity(cords)
-				await setLocationName(x)
+				setLocationName(x)
 				setLocation(cords[0], cords[1]);
 				await getData(cords[0], cords[1])
 			}
@@ -101,14 +94,14 @@ export default function App() {
 
 					{/* search container */}
 					<View style={styles.searchContainer}>
-						{/* city inpit */}
-						<TextInput style={errorStatus ? styles.errorInput : styles.input} placeholder="Enter a city" onSubmitEditing={onSubmit} value={city} onChangeText={text => setCity(text)} />
+						{/* city input */}
+						<TextInput style={inputErr ? styles.errorInput : styles.input} placeholder="Enter a city" onSubmitEditing={onSubmit} value={city} onChangeText={text => setCity(text)} />
 						{/* search button */}
 
 					</View>
 
 					{/* error message */}
-					<Text style={styles.errorMsg}>{inputErr}</Text>
+					{inputErr ? <Text style={styles.errorMsg}>{inputErr}</Text> : null}
 
 					{/* loading container */}
 					{loading ? <View style={styles.loadingContainer}>
@@ -165,7 +158,7 @@ export default function App() {
 								showsHorizontalScrollIndicator={true}
 								data={daily.slice(0, 24)}
 								renderItem={({ item }) => (
-									<FurtureForecast temp={Math.round(item["temp"].day)} icon={item["weather"][0].icon} dec={item["weather"][0].description} dt={dtToDate(item["dt"])} />
+									<FurtureForecast temp={Math.round(item["temp"].day)} icon={item["weather"][0].icon} dec={item["weather"][0].description} dt={dtToDate(item["dt"], weather["timezone_offset"])} />
 								)} />
 						</View>
 
@@ -185,6 +178,7 @@ export default function App() {
 							<OtherDataCard icon={<Feather name="eye" size={50} color={colors.iconColor} />} text={"Visibility"} data={weather.current["visibility"]} />
 							<OtherDataCard icon={<Feather name="sunrise" size={50} color={colors.iconColor} />} text={"Sunrise"} data={dtToTime(weather.current["sunrise"], weather["timezone_offset"]) + " (24 hr)"} />
 							<OtherDataCard icon={<Feather name="sunset" size={50} color={colors.iconColor} />} text={"Sunset"} data={dtToTime(weather.current["sunset"], weather["timezone_offset"]) + " (24 hr)"} />
+
 						</View>
 					</View> : null}
 				</SafeAreaView>
@@ -200,7 +194,7 @@ const styles = StyleSheet.create({
 	},
 	titleContainer: {
 		marginLeft: 40,
-		marginTop: 20,
+		marginTop: 30,
 		marginBottom: 30
 	},
 	title: {
@@ -266,7 +260,7 @@ const styles = StyleSheet.create({
 		alignSelf: 'center',
 
 		display: 'flex',
-		flexDirection: 'coloum',
+		flexDirection: 'column',
 		justifyContent: 'center',
 
 		shadowColor: "#000",
